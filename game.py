@@ -1,21 +1,20 @@
 from board import Board
 
-def playGame(): 
-
+def playGame():
     board = Board()
     moveCount = 0
     player = 1
 
     while True:
         board.printBoard()
+        board.evaluate()
         player = moveCount % 2 + 1
         print(f"Player {player}'s turn...")
 
-
         success = False
         while success == False:
-            row = getInputCoordinate()
-            col = getInputCoordinate()
+            row = getInputCoordinate("row")
+            col = getInputCoordinate("column")
             success = board.placePiece(row, col, player)
         
         print("\n=====================================\n")
@@ -24,11 +23,15 @@ def playGame():
             board.printBoard()
             print(f"\nPlayer {player} wins!\n=====================================\n")
             break
+        if moveCount == (board.SIZE ** 2):
+            board.printBoard()
+            print(f"\nDRAW\n=====================================\n")
+            break
             
 
-def getInputCoordinate():
+def getInputCoordinate(axis):
     while True:
-        userInput = input("Enter row {0 to 2}: ")
+        userInput = input(f"Enter {axis} (0 to 2): ")
         try:
             number = int(userInput)
             if number < 0 or number > 2:
