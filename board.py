@@ -161,7 +161,6 @@ class Board:
             elif O_count == 1 and X_count == 0:
                 O_1 += 1  # Column has 1 O and no Xs
 
-        #print(f"x2={X_2} x1={X_1} o2={O_2} o1={O_1}")
         eval = 3*O_2+O_1-(3*X_2+X_1)
         return eval
 

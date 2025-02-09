@@ -1,6 +1,5 @@
 from Board import Board
 from GameTreeNode import GameTreeNode
-from AI import AI
 
 def play_game():
     board = Board()
@@ -23,7 +22,8 @@ def play_game():
             print(f"\nDebugging AI (player {player})...\n-------------------------------------\n")
 
             node = GameTreeNode(board, player)
-            _, row, col = node.minimax(0, True)
+            score, row, col = node.minimax(0, True)
+            print(f"AI chose row {row}, col {col} with score {score}")
             board.place_piece(row, col, player)
 
             print("\n-------------------------------------\n")

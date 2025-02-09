@@ -1,14 +1,11 @@
 from Board import Board
 
 class GameTreeNode:
-    MAX_DEPTH = 3  # Static constant
+    MAX_DEPTH = 3
 
-    def __init__(self, game_board, player):
-        """Initialize a game tree node with a game state."""
-        self.children = []  # List of child nodes
+    def __init__(self, game_board, player): # Initialize a game tree node with a game state
         self.game_board = game_board  # Stores the current game state
         self.minimax_value = 0  # Stores minimax evaluation
-        self.depth = 0  # Stores the depth of the node in the tree
         self.player = player
 
     @staticmethod
@@ -22,53 +19,38 @@ class GameTreeNode:
     def minimax (self, depth, is_maximizing):
 
         if depth == self.MAX_DEPTH or self.game_board.check_win() != 0:
-            # print(f"its the end... eval: {self.game_board.evaluate()}\n")
+            self.game_board.print_board()
+            print(f"its the end... eval: {self.game_board.evaluate()}\n")
             return self.game_board.evaluate(), None, None
         
         best_move = None
 
         if is_maximizing:  # Maximizing player (AI)
-            # print(f"max @ depth {depth}\n")
             best_score = float('-inf')
-        #     for each possible move in state:
-        #         newState = applyMove(state, move)  // Generate new game state
-        #         score = Minimax(newState, depth + 1, False)  // Recursive call for minimizing player
-        #         bestScore = max(bestScore, score)  // Choose the highest score
             for i in range(self.game_board.SIZE):
                 for j in range(self.game_board.SIZE):
                     if self.game_board.game_board[i][j] == self.game_board.EMPTY:
                         child_board = self.game_board.clone()
                         child_board.place_piece(i, j, self.player)
                         child_node = GameTreeNode(child_board, self.player)
-                        # child_node.game_board.print_board()
-                        # child_node.game_board.evaluate()
                         score, _, _ = child_node.minimax(depth + 1, False)
                         if score > best_score:
                             best_score = score
                             best_move = (i, j)
-
             # print(f"max returning {best_score}, {best_move}\n")
             return best_score, best_move[0], best_move[1]
 
         else:  # Minimizing player (Opponent)
-            # print(f"min @ depth {depth}\n")
             best_score = float('inf')
-        #     for each possible move in state:
-        #         newState = applyMove(state, move)  // Generate new game state
-        #         score = Minimax(newState, depth + 1, True)  // Recursive call for maximizing player
-        #         bestScore = min(bestScore, score)  // Choose the lowest score
             for i in range(self.game_board.SIZE):
                 for j in range(self.game_board.SIZE):
                     if self.game_board.game_board[i][j] == self.game_board.EMPTY:
                         child_board = self.game_board.clone()
                         child_board.place_piece(i, j, self.other_player(self.player))
                         child_node = GameTreeNode(child_board, self.player)
-                        # child_node.game_board.print_board()
-                        # child_node.game_board.evaluate()
                         score, _, _ = child_node.minimax(depth + 1, True)
                         if score < best_score:
                             best_score = score
                             best_move = (i, j)
-
             # print(f"min returning {best_score}, {best_move}\n")
             return best_score, best_move[0], best_move[1]
