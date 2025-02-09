@@ -163,7 +163,6 @@ class Board:
 
         #print(f"x2={X_2} x1={X_1} o2={O_2} o1={O_1}")
         eval = 3*O_2+O_1-(3*X_2+X_1)
-        print(f"evaluation = {eval}")
         return eval
 
     def print_board(self):

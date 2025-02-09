@@ -19,15 +19,17 @@ class GameTreeNode:
     def other_player(player):
         return 1 if player == 2 else 2
 
-    def minimax (self, depth, isMaximizing):
+    def minimax (self, depth, is_maximizing):
 
         if depth == self.MAX_DEPTH or self.game_board.check_win() != 0:
-            print(f"its the end... eval: {self.game_board.evaluate()}\n")
-            return self.game_board.evaluate()
+            # print(f"its the end... eval: {self.game_board.evaluate()}\n")
+            return self.game_board.evaluate(), None, None
+        
+        best_move = None
 
-        if isMaximizing:  # Maximizing player (AI)
-            print(f"max @ depth {depth}\n")
-            bestScore = float('-inf')
+        if is_maximizing:  # Maximizing player (AI)
+            # print(f"max @ depth {depth}\n")
+            best_score = float('-inf')
         #     for each possible move in state:
         #         newState = applyMove(state, move)  // Generate new game state
         #         score = Minimax(newState, depth + 1, False)  // Recursive call for minimizing player
@@ -38,17 +40,19 @@ class GameTreeNode:
                         child_board = self.game_board.clone()
                         child_board.place_piece(i, j, self.player)
                         child_node = GameTreeNode(child_board, self.player)
-                        child_node.game_board.print_board()
-                        child_node.game_board.evaluate()
-                        # score = child_node.minimax(depth + 1, False)
-                        # bestScore = max(bestScore, score)
+                        # child_node.game_board.print_board()
+                        # child_node.game_board.evaluate()
+                        score, _, _ = child_node.minimax(depth + 1, False)
+                        if score > best_score:
+                            best_score = score
+                            best_move = (i, j)
 
-            print(f"max returning {bestScore}\n")
-            return bestScore
+            # print(f"max returning {best_score}, {best_move}\n")
+            return best_score, best_move[0], best_move[1]
 
         else:  # Minimizing player (Opponent)
-            print(f"min @ depth {depth}\n")
-            bestScore = float('inf')
+            # print(f"min @ depth {depth}\n")
+            best_score = float('inf')
         #     for each possible move in state:
         #         newState = applyMove(state, move)  // Generate new game state
         #         score = Minimax(newState, depth + 1, True)  // Recursive call for maximizing player
@@ -59,10 +63,12 @@ class GameTreeNode:
                         child_board = self.game_board.clone()
                         child_board.place_piece(i, j, self.other_player(self.player))
                         child_node = GameTreeNode(child_board, self.player)
-                        child_node.game_board.print_board()
-                        child_node.game_board.evaluate()
-                        # score = child_node.minimax(depth + 1, True)
-                        # bestScore = min(bestScore, score)
+                        # child_node.game_board.print_board()
+                        # child_node.game_board.evaluate()
+                        score, _, _ = child_node.minimax(depth + 1, True)
+                        if score < best_score:
+                            best_score = score
+                            best_move = (i, j)
 
-            print(f"min returning {bestScore}\n")
-            return bestScore
+            # print(f"min returning {best_score}, {best_move}\n")
+            return best_score, best_move[0], best_move[1]

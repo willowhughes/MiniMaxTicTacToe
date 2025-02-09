@@ -9,7 +9,7 @@ def play_game():
 
     while True:
         board.print_board()
-        board.evaluate()
+        print(f"Evaluation = {board.evaluate()}")
         player = moveCount % 2 + 1
         print(f"Player {player}'s turn...")
 
@@ -23,25 +23,21 @@ def play_game():
             print(f"\nDebugging AI (player {player})...\n-------------------------------------\n")
 
             node = GameTreeNode(board, player)
-            #node.expand_children(GameTreeNode.MAX_DEPTH)
-            best_child = node.minimax(0, True)
-            #board = best_child.game_board
-
-            # #testing:
-            # ai = AI(player)
-            # best_child = ai.minimax(board, 0, True)
+            _, row, col = node.minimax(0, True)
+            board.place_piece(row, col, player)
 
             print("\n-------------------------------------\n")
 
         
         print("=====================================")
-        if board.check_win() != 0:
+        status = board.check_win()
+        if status == 3:
+            board.print_board()
+            print(f"\nDraw! {player} wins!\n=====================================\n")
+            break
+        if status == 1 or status == 2:
             board.print_board()
             print(f"\nPlayer {player} wins!\n=====================================\n")
-            break
-        if moveCount == ((board.SIZE ** 2)-1):
-            board.print_board()
-            print(f"\nDRAW\n=====================================\n")
             break
         moveCount += 1
             
