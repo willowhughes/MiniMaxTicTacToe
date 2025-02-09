@@ -5,11 +5,12 @@ class Board:
     O = 'O'
     SIZE = 3
     EMPTY = ' '
-    game_board = [[EMPTY, EMPTY, EMPTY],
-                 [EMPTY, EMPTY, EMPTY],
-                 [EMPTY, EMPTY, EMPTY]]
-
     
+    def __init__(self):
+        self.game_board = [[self.EMPTY, self.EMPTY, self.EMPTY],
+                           [self.EMPTY, self.EMPTY, self.EMPTY],
+                           [self.EMPTY, self.EMPTY, self.EMPTY]]
+
     def place_piece(self, row, col, player):
         if self.game_board[row][col] != self.EMPTY:
             print("That space is already occupied, try again.")
@@ -166,6 +167,7 @@ class Board:
         return eval
 
     def print_board(self):
+        print("\n")
         for i in range(self.SIZE):
             for j in range(self.SIZE):
                 print(f" {self.game_board[i][j]}", end='')
@@ -173,9 +175,8 @@ class Board:
                     print(" |", end='')
             if i < self.SIZE-1:
                 print("\n---+---+---")
-        print("")
+        print("\n")
 
     def clone(self):
         boardCopy = copy.deepcopy(self)
         return boardCopy
-
