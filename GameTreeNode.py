@@ -22,7 +22,7 @@ class GameTreeNode:
     def minimax (self, depth, isMaximizing):
 
         if depth == self.MAX_DEPTH or self.game_board.check_win() != 0:
-            print("its the end\n" + self.game_board.evaluate() + "\n")
+            print(f"its the end... eval: {self.game_board.evaluate()}\n")
             return self.game_board.evaluate()
 
         if isMaximizing:  # Maximizing player (AI)
@@ -40,6 +40,8 @@ class GameTreeNode:
                         child_node = GameTreeNode(child_board, self.player)
                         child_node.game_board.print_board()
                         child_node.game_board.evaluate()
+                        # score = child_node.minimax(depth + 1, False)
+                        # bestScore = max(bestScore, score)
 
             print(f"max returning {bestScore}\n")
             return bestScore
@@ -54,12 +56,13 @@ class GameTreeNode:
             for i in range(self.game_board.SIZE):
                 for j in range(self.game_board.SIZE):
                     if self.game_board.game_board[i][j] == self.game_board.EMPTY:
-                        #print(f"(min) potential move at: {i}, {j}\n")
                         child_board = self.game_board.clone()
                         child_board.place_piece(i, j, self.other_player(self.player))
                         child_node = GameTreeNode(child_board, self.player)
                         child_node.game_board.print_board()
                         child_node.game_board.evaluate()
+                        # score = child_node.minimax(depth + 1, True)
+                        # bestScore = min(bestScore, score)
 
             print(f"min returning {bestScore}\n")
             return bestScore
