@@ -3,19 +3,25 @@ from GameTreeNode import GameTreeNode
 import time
 import sys
 
+"""This class handles running the game"""
+
 THINKING_TIME_MULTIPLIER = 1
 
 def start_game():
+    """Runs a Human vs. AI game or AI vs. AI game"""
     while True:
-        choice = input("=====================================\n\nSelect the AIs opponent:\n[1] Human\n[2] AI\n==>: ")
+        choice = input("=====================================\n\nSelect the AIs opponent:\n[1] Human\n[2] AI\n[3] Quit\n==>: ")
         if choice == "1":
             play_game()
         elif choice == "2":
             play_game_ai()
+        elif choice == "3":
+            break
         else:
             print("Invalid choice! Please try again.")
 
 def play_game():
+    """Runs the Human vs. AI tictactoe game"""
     board = Board()
     moveCount = 0
     player = 1
@@ -52,6 +58,7 @@ def play_game():
         moveCount += 1
 
 def play_game_ai():
+    """Runs the AI vs. AI tictactoe game"""
     board = Board()
     moveCount = 0
     player = 1
@@ -76,18 +83,21 @@ def play_game_ai():
             score, row, col = node.minimax(0, True)
             simulate_thinking()
             print(f"AI Player {player} chose: {row}, {col}\n")
+            print(f"nodes expanded: {node.nodes_expanded}")
             board.place_piece(row, col, player)
         else:
             node = GameTreeNode(board, player)
             score, row, col = node.minimax(0, True)
             simulate_thinking()
             print(f"AI Player {player} chose: {row}, {col}\n")
+            print(f"nodes expanded: {node.nodes_expanded}")
             board.place_piece(row, col, player)
 
         moveCount += 1
             
 @staticmethod
 def get_input_coordinate(axis):
+    """Takes in the Axis (row or col) as an arguement and gets coordinate input"""
     while True:
         userInput = input(f"Enter {axis} (0 to 2): ")
         try:
@@ -101,6 +111,7 @@ def get_input_coordinate(axis):
 
 @staticmethod
 def simulate_thinking():
+    """A function for simulating time for the AI to think"""
     for i in range(4):  # Loop through thinking stages
         sys.stdout.write("\rThinking" + "." * i + "   ")  # Overwrite the line
         sys.stdout.flush()
