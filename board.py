@@ -85,11 +85,11 @@ class Board:
             
         return 0
             
-    def evaluate(self):
+    def evaluate(self, player):
         #X_2 represents the # of rows, columns and diagonals with 2 Xs and no Os
         #X_1 represents the # of rows, columns and diagonals with 1 X and no Os
         #same for O_2 and O_1
-        X_2, X_1, O_2, O_1 = 0, 0, 0, 0
+        X_3, X_2, X_1, O_3, O_2, O_1 = 0, 0, 0, 0, 0, 0
         
         #check diag
         X_count, O_count = 0, 0
@@ -99,11 +99,15 @@ class Board:
             elif self.game_board[i][i] == self.O:
                 O_count += 1
         #Determine X_2, X_1, O_2, O_1 based on counts
-        if X_count == 2 and O_count == 0:
+        if X_count == 3 and O_count == 0:
+            X_3 += 1
+        elif X_count == 2 and O_count == 0:
             X_2 += 1  # Diag has 2 Xs and no Os
         elif X_count == 1 and O_count == 0:
             X_1 += 1  # Diag has 1 X and no Os
-        if O_count == 2 and X_count == 0:
+        if O_count == 3 and X_count == 0:
+            O_3 += 1
+        elif O_count == 2 and X_count == 0:
             O_2 += 1  # Diag has 2 Os and no Xs
         elif O_count == 1 and X_count == 0:
             O_1 += 1  # Diag has 1 O and no Xs
@@ -116,11 +120,15 @@ class Board:
             elif self.game_board[i][(self.SIZE-1)-i] == self.O:
                 O_count += 1
         #Determine X_2, X_1, O_2, O_1 based on counts
-        if X_count == 2 and O_count == 0:
+        if X_count == 3 and O_count == 0:
+            X_3 += 1
+        elif X_count == 2 and O_count == 0:
             X_2 += 1  # Diag has 2 Xs and no Os
         elif X_count == 1 and O_count == 0:
             X_1 += 1  # Diag has 1 X and no Os
-        if O_count == 2 and X_count == 0:
+        if O_count == 3 and X_count == 0:
+            O_3 += 1
+        elif O_count == 2 and X_count == 0:
             O_2 += 1  # Diag has 2 Os and no Xs
         elif O_count == 1 and X_count == 0:
             O_1 += 1  # Diag has 1 O and no Xs
@@ -134,14 +142,18 @@ class Board:
                 elif self.game_board[row][col] == self.O:
                     O_count += 1
             # Determine X_2, X_1, O_2, O_1 based on counts
-            if X_count == 2 and O_count == 0:
-                X_2 += 1  # row has 2 Xs and no Os
+            if X_count == 3 and O_count == 0:
+                X_3 += 1
+            elif X_count == 2 and O_count == 0:
+                X_2 += 1  # Diag has 2 Xs and no Os
             elif X_count == 1 and O_count == 0:
-                X_1 += 1  # row has 1 X and no Os
-            if O_count == 2 and X_count == 0:
-                O_2 += 1  # row has 2 Os and no Xs
+                X_1 += 1  # Diag has 1 X and no Os
+            if O_count == 3 and X_count == 0:
+                O_3 += 1
+            elif O_count == 2 and X_count == 0:
+                O_2 += 1  # Diag has 2 Os and no Xs
             elif O_count == 1 and X_count == 0:
-                O_1 += 1  # row has 1 O and no Xs
+                O_1 += 1  # Diag has 1 O and no Xs
         
         #check columns
         for col in range(self.SIZE):
@@ -152,16 +164,23 @@ class Board:
                 elif self.game_board[row][col] == self.O:
                     O_count += 1
             # Determine X_2, X_1, O_2, O_1 based on counts
-            if X_count == 2 and O_count == 0:
-                X_2 += 1  # Column has 2 Xs and no Os
+            if X_count == 3 and O_count == 0:
+                X_3 += 1
+            elif X_count == 2 and O_count == 0:
+                X_2 += 1  # Diag has 2 Xs and no Os
             elif X_count == 1 and O_count == 0:
-                X_1 += 1  # Column has 1 X and no Os
-            if O_count == 2 and X_count == 0:
-                O_2 += 1  # Column has 2 Os and no Xs
+                X_1 += 1  # Diag has 1 X and no Os
+            if O_count == 3 and X_count == 0:
+                O_3 += 1
+            elif O_count == 2 and X_count == 0:
+                O_2 += 1  # Diag has 2 Os and no Xs
             elif O_count == 1 and X_count == 0:
-                O_1 += 1  # Column has 1 O and no Xs
+                O_1 += 1  # Diag has 1 O and no Xs
 
-        eval = 3*O_2+O_1-(3*X_2+X_1)
+        if player == 1:
+            eval = 10*X_3 + 3*X_2 + X_1 - (10*O_3 + 3*O_2 + O_1)
+        else:
+            eval = 10*O_3 + 3*O_2 + O_1 - (10*X_3 + 3*X_2 + X_1)
         return eval
 
     def print_board(self):

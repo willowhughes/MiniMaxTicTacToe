@@ -1,7 +1,7 @@
 from Board import Board
 
 class GameTreeNode:
-    MAX_DEPTH = 3
+    MAX_DEPTH = 1
 
     def __init__(self, game_board, player): # Initialize a game tree node with a game state
         self.game_board = game_board  # Stores the current game state
@@ -19,9 +19,9 @@ class GameTreeNode:
     def minimax (self, depth, is_maximizing):
 
         if depth == self.MAX_DEPTH or self.game_board.check_win() != 0:
-            self.game_board.print_board()
-            print(f"its the end... eval: {self.game_board.evaluate()}\n")
-            return self.game_board.evaluate(), None, None
+            # self.game_board.print_board()
+            # print(f"i am player {self.player}     its the end... eval: {self.game_board.evaluate(self.player)}\n")
+            return self.game_board.evaluate(self.player), None, None
         
         best_move = None
 
