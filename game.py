@@ -5,6 +5,16 @@ import sys
 
 THINKING_TIME_MULTIPLIER = 1
 
+def start_game():
+    while True:
+        choice = input("=====================================\n\nSelect the AIs opponent:\n[1] Human\n[2] AI\n==>: ")
+        if choice == "1":
+            play_game()
+        elif choice == "2":
+            play_game_ai()
+        else:
+            print("Invalid choice! Please try again.")
+
 def play_game():
     board = Board()
     moveCount = 0
@@ -13,6 +23,7 @@ def play_game():
     while True:
         print("\n=====================================")
         board.print_board()
+
         status = board.check_win()
         if status == 3:
             print(f"\nDraw!\n=====================================\n")
@@ -31,15 +42,12 @@ def play_game():
                 col = get_input_coordinate("column")
                 successful_move = board.place_piece(row, col, player)
         else:
-            # print(f"\nDebugging AI (player {player})...\n-------------------------------------\n")
-
             node = GameTreeNode(board, player)
             score, row, col = node.minimax(0, True)
             simulate_thinking()
             print(f"AI Player {player} chose: {row}, {col}\n")
+            print(f"nodes expanded: {node.nodes_expanded}")
             board.place_piece(row, col, player)
-
-            # print("\n-------------------------------------\n")
 
         moveCount += 1
 
@@ -51,6 +59,7 @@ def play_game_ai():
     while True:
         print("\n=====================================")
         board.print_board()
+
         status = board.check_win()
         if status == 3:
             print(f"\nDraw!\n=====================================\n")
@@ -63,25 +72,17 @@ def play_game_ai():
         print(f"Player {player}'s turn...")
 
         if player == 1:
-            # print(f"\nDebugging AI (player {player})...\n-------------------------------------\n")
-
             node = GameTreeNode(board, player)
             score, row, col = node.minimax(0, True)
             simulate_thinking()
             print(f"AI Player {player} chose: {row}, {col}\n")
             board.place_piece(row, col, player)
-
-            # print("\n-------------------------------------\n")
         else:
-            # print(f"\nDebugging AI (player {player})...\n-------------------------------------\n")
-
             node = GameTreeNode(board, player)
             score, row, col = node.minimax(0, True)
             simulate_thinking()
             print(f"AI Player {player} chose: {row}, {col}\n")
             board.place_piece(row, col, player)
-
-            # print("\n-------------------------------------\n")
 
         moveCount += 1
             
